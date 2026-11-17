@@ -1082,6 +1082,40 @@ vale, también para quien no termina, es el de esa sim, se descartan las accione
 más de 10 s de atraso, y si se recarga la página el duelo sigue donde estaba. El sabotaje opcional (humo al que va primero con cada
 Gran Final) es solo visual: nunca cambia un número.
 
+### Veta (incremental de minería con física)
+
+Juguete de física en pixel gordo (`public/games/veta/`). Una plataforma minera tira bolas a un **pozo** de 48 columnas que no se
+termina: un carro corre por la plataforma y su cañón tira solo la bola que sigue del **mazo** (de 2 a 6 ranuras) cada 0,8 s. Las bolas
+caen con gravedad, rebotan en las paredes, en las celdas y en la panza de la plataforma, le sacan vida a lo que tocan y pierden un golpe
+por choque; lo que se rompe se vende solo. Cuando la franja de 8 filas que está bajo la plataforma queda 70 % picada, la plataforma baja
+2 m. Arrastrar sobre el pozo apunta (se ve la mira y la trayectoria) y al soltar sale un **tiro apuntado** que pega el doble y gasta
+**Pulso** (6, se recarga 1 cada 2 s); no hace falta puntería fina, y si lo primero que toca es mineral paga el doble (el extra
+"justo"). Picar mineral llena la **Presión**, que llena se queda llena hasta tocar **DINAMITA**: un cráter bajo el carro y 8 s de tiros
+apuntados gratis. Ocho bolas con dibujo y comportamiento propios (la Rebotona no se gasta en las paredes, la Pesada atraviesa lo primero
+que rompe, el Taladro baja derecho, la Bomba estalla al tercer choque, el Rayo recorre la veta de metal conectada, el Ácido deja los
+vecinos a media vida y el Imán paga doble y atrae el metal) y diez materiales que suenan cada uno en una nota de la escala
+pentatónica; también hay bolsones de gas que estallan en cadena y cofres con Gemas. Cada 50 m hay un **bioma** con su paleta y su regla
+(Pradera, Arenisca con arena que cae, Hielo donde no se frena, Hongos que vuelven a crecer, Cristal que desvía en ángulo recto, Magma
+con lava que quema la bola, Obsidiana casi toda dura y Núcleo con la gravedad al revés abajo) y en su entrada una **capa dura** que solo
+rompen las bolas con el **poder** que pide (rasquetearla sin poder saca chispas que pagan un poco, así nadie se queda sin plata). Pasado
+el Núcleo, el pozo sigue en otro estrato con otra familia de colores. Abajo, un **cajón** cerrado muestra la compra sugerida; abierto
+tiene Bolas (niveles x1, x10 o máx y el mazo), Mejoras (40 niveles en ocho series), **Museo** (48 fósiles en seis vitrinas, con Gemas)
+y **Plano** (40 nodos en cuatro ramas, con Fósiles de oro, que no se pierden). El **Derrumbe** (desde los 100 m) reinicia el pozo, las
+monedas, las bolas y las mejoras, y da Fósiles de oro según lo hondo que llegó. Mientras no se juega, el cañón sigue: al volver se suma
+el 30 % de lo que rendía por minuto, con tope de 1 hora (mejorable), sin bajar metros. Un **tutorial por pasos** (un globo por vez)
+enseña a apuntar, rebotar en la pared, comprar, abrir el cajón, armar el mazo, la dinamita, la capa dura, el museo y el Derrumbe; las
+pestañas del cajón aparecen cuando hacen falta. La simulación (`shared/sim.js`) es pura y determinista a 30 pasos por segundo, con
+posiciones y velocidades enteras (256 unidades por celda), los 64 ángulos del cañón en una tabla escrita a mano y el pozo generado fila
+por fila con un hash entero de la semilla; se guardan solo las 96 filas vivas. El dibujo (`render.js`, `art.js`, canvas 2D) pinta el
+pozo en un lienzo aparte de 6×6 píxeles por celda y repinta solo lo que cambió; lo no descubierto se ve a oscuras y las bolas llevan
+luz. Los números se calibraron con un bot (`shared/bot.js`, cinco niveles): la primera capa dura llega a los 5 a 7 minutos, el primer
+Derrumbe conviene hacia los 15 a 20 y el Núcleo, a las 3 horas más o menos. Se guarda solo (`shared/save.js`, con el pozo como texto)
+y se puede exportar e importar. Modos contra otros, de cero y con todo x6: **Veta del día** (3 minutos con el pozo, el mazo y los
+niveles de la fecha), **Carrera** de 3, 5 o 10 minutos con medallas por metros y **reto por link** (`?reto=semilla-minutos-metros`), y
+**duelo online** de hasta 8 (`server/games/veta.js`, sobre `_race.js`): gana el que baja más (desempatan las monedas), el servidor rehace
+el registro de acciones de cada jugador y su resultado es el que vale; romper una capa dura le tira una polvareda al que va primero
+(solo visual). En la tabla en vivo se ve un pozo en miniatura con la altura de cada rival.
+
 ## Juegos diarios
 
 Un desafío nuevo por día, igual para todos y a la misma hora: **cambia a las 00:00 de Argentina** (UTC−3 fijo). Cada juego
@@ -1130,6 +1164,7 @@ cada carpeta de datos tiene su `LEEME.txt` con las fuentes y licencias. Para sum
 | Chorrito | Un nivel de 10 colores con los mismos tubos para todos; cuenta los trasvases (estrellas contra lo que encuentra el resolvedor). | La semilla es la fecha (`chorrito-daily-AAAA-MM-DD`) y `chorrito/shared/engine.js` arma siempre el mismo nivel y comprueba que tiene solución; el resultado y la racha se guardan con `daily.js`, y la partida en curso queda guardada si se recarga. |
 | Gemas | 25 jugadas con las mismas gemas para todos (las que caen salen de la fecha y de las jugadas); cuenta el puntaje y las estrellas según lo que consigue la compu con ese mismo tablero. | La semilla es la fecha (`gemas-daily-AAAA-MM-DD`) y `gemas/shared/engine.js` rehace la partida guardada si se recarga; el resultado y la racha se guardan con `daily.js`. |
 | Bengala | Tres funciones de fuegos artificiales, de cero, con taller entre una y otra: la sede (con su regla), los tres colores permitidos, el viento y los farolitos son los mismos para todos; cuenta las chispas y la mejor cadena. | La fecha siembra `dailySetup` en `bengala/shared/sim.js`; el resultado y la racha se guardan con `daily.js`. |
+| Veta | Una carrera de 3 minutos, de cero: el pozo, el mazo de cuatro bolas y sus niveles salen de la fecha y son los mismos para todos; cuenta los metros (con medalla). | La fecha siembra `dailySetup` en `veta/shared/sim.js`; el resultado y la racha se guardan con `daily.js`. |
 
 El texto para compartir de cada uno es `game.it · <Juego> #N …` con cuadraditos de colores y el link; en modo práctica no se
 suma nada a las estadísticas. Las listas de respuestas y de puzzles se pueden ampliar sin tocar el código (los desafíos

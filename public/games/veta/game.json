@@ -1,0 +1,20 @@
+{
+  "id": "veta",
+  "title": { "es": "Veta", "en": "Lode" },
+  "description": {
+    "es": "Una plataforma minera tira bolas a un pozo de píxeles que no se termina: rebotan, pican y la plataforma baja. Apuntá con el dedo, armá el mazo de ocho bolas distintas, rompé las capas duras y bajá por ocho biomas. El cañón sigue mientras no jugás. Con veta del día, carrera con medallas y duelo online.",
+    "en": "A mining rig shoots balls into an endless pixel pit: they bounce, dig and the rig goes down. Aim with your finger, build a deck of eight different balls, break the hard bands and dig through eight biomes. The cannon keeps going while you are away. With a daily lode, medal races and online duels."
+  },
+  "categories": ["idle", "estrategia", "casual", "online", "multijugador", "diarios"],
+  "tags": ["incremental", "mina", "mining", "pozo", "pit", "pixel", "física", "physics", "rebote", "bounce", "prestigio", "prestige", "carrera", "race", "duelo", "duel", "diario", "daily"],
+  "thumbnail": "thumb.webp",
+  "entry": "index.html",
+  "tech": "canvas2d + dom + websocket",
+  "sdk": true,
+  "platforms": ["desktop", "mobile"],
+  "orientation": "any",
+  "input": ["mouse", "touch", "keyboard"],
+  "features": { "online": true, "multiplayer": true, "maxPlayers": 8, "daily": true, "save": true, "story": false },
+  "daily": { "epoch": "2026-11-17" },
+  "order": 76
+}
